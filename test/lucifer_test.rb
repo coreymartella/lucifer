@@ -40,4 +40,17 @@ class LuciferTest < Test::Unit::TestCase
     assert_equal '999-99-9999', person.ssn
   end
   
+  def test_encrypt_null_column_before_save
+    person = Person.new :name=>'Alice', :ssn=>nil
+    assert_nil person.ssn_encrypted
+    person.save
+    assert_nil person.ssn_encrypted
+  end
+  
+  def test_decrypt_null_columns_on_load
+    id = Person.create(:name=>'Bob', :ssn=>nil).id
+    person = Person.find id
+    assert_nil person.ssn
+  end
+  
 end

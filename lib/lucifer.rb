@@ -24,14 +24,17 @@ module Lucifer
       self.key = EzCrypto::Key.with_password secret[:key], secret[:salt]
     end
     def key_encrypt_and_encode(value)
-      Base64::encode64 key_encrypt(value)
+      return nil if value.nil?
+      key.encrypt64 value
     end
     def key_encrypt(value)
+      return nil if value.nil?
       key.encrypt value
     end
     
     def key_decode_and_decrypt(value)
-      key_decrypt Base64::decode64(value)
+      return nil if value.nil?
+      key.decrypt64 value
     end
     def key_decrypt(value)
       key.decrypt value
